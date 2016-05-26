@@ -5,6 +5,8 @@
  */
 package formasearch;
 
+import java.util.List;
+
 /**
  *
  * @author Epulapp
@@ -15,7 +17,11 @@ public class FormaSearch {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        String fichier ="C:\\Users\\Epulapp\\Documents\\ProjetOptiDiscrete\\FormaSearch\\Sources\\LieuxPossibles.txt";
+        List<LieuFormation> formations = Utilitaire.getLieuFormationFichier(fichier);
+        /*for(LieuFormation f:formations){
+            System.out.println(f.toString());
+        }*/
     }
     
 }
