@@ -5,64 +5,36 @@
  */
 package formasearch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Epulapp
  */
 public class LieuFormation extends Ville {
-
-    private String id;
-    private String nom;
-    private String codePostal;
-    private double longitude;
-    private double latitude;
+    
+    private List<Agence> agencesAssociees;
     
     public LieuFormation(){
-        
+        agencesAssociees = new ArrayList<>();
     }
     
-    public int getDistance(Ville v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getCodePostal() {
-        return codePostal;
-    }
-
-    public void setCodePostal(String codePostal) {
-        this.codePostal = codePostal;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public boolean hasEnoughtPlace(Agence agence){
+        int nbPersonnesLieu=0;
+        for(Agence a:agencesAssociees){
+            nbPersonnesLieu+=a.getNbPersonnes();           
+        }
+        if((nbPersonnesLieu+agence.getNbPersonnes())>60){
+            return false;
+        }
+        return true;
+    } 
+    
+    //Assigne l'agence au lieu de formation et l'agence au lieu de formation
+    public void assignAgence(Agence a){
+        agencesAssociees.add(a);
+        a.setLieuFormation(this);
     }
 
     @Override
