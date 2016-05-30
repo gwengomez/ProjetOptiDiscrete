@@ -5,6 +5,7 @@
  */
 package formasearch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,23 +17,99 @@ public class Agence extends Ville{
     private int nbPersonnes;
     
     private LieuFormation lieuFormation;
+    private List<LieuTabou> tabou;
     
     public Agence(){
-        
+        tabou = new ArrayList<LieuTabou>();
     }
     
     public LieuFormation getLieuFormationPlusProche(List<LieuFormation> formations){
+        LieuFormation lieuChoisi = null;
         for(LieuFormation f:formations){
             //Si le lieu a assez de place
             if(f.hasEnoughtPlace(this)){
-                //On regarde sa distance
-                f.getDistance(this);
-                
+                if ((lieuChoisi == null) || (f.getDistance(this) < lieuChoisi.getDistance(this))) {
+                    if (!tabou.contains(f))
+                    lieuChoisi = f;
+                }
             }
         }
              
         //On retourne le lieu le plus proche     
-        return null;
+        return lieuChoisi;
+    }
+    
+    public LieuFormation getLieuFormationPlusProche(List<LieuFormation> formations, Solution solution){
+        LieuFormation lieuChoisi = null;
+        double coutChoisi = 0;
+        boolean nouvelleSolution = false;
+        for(LieuFormation f:formations){
+            //Si le lieu a assez de place
+            if(f.hasEnoughtPlace(this)){
+                if (lieuChoisi == null) {
+                    lieuChoisi = f;
+                }
+                int nbLieu = solution.getFormationsChoisies().size();
+                if (!solution.getFormationsChoisies().contains(f))
+                    nbLieu++;
+                coutChoisi = 3000*nbLieu;
+                for (Agence a : solution.getAgences()) {
+                    coutChoisi+=a.getNbPersonnes()*0.4*a.getDistance(a.getLieuFormation())*2;
+                }
+
+                if (coutChoisi < solution.getCout()) {
+                    lieuChoisi = f;
+                    nouvelleSolution = true;
+
+                }
+                
+            }
+        }
+        if (!nouvelleSolution) {
+            int maxTabou = 0;
+            int minTabou = 0;
+            
+            if (tabou.size() >= 3) {
+                for (LieuTabou lieuTabou : tabou) {
+                    if (lieuTabou.getAnciennete() >= maxTabou)
+                        maxTabou = lieuTabou.getAnciennete();
+                }
+                minTabou = maxTabou;
+                for (LieuTabou lieuTabou : tabou) {
+                    if (lieuTabou.getAnciennete() <= minTabou)
+                        minTabou = lieuTabou.getAnciennete();
+                }
+                LieuTabou tabouAEnlever = null;
+                for (LieuTabou lieuTabou : tabou) {
+                    if (lieuTabou.getAnciennete() == minTabou) {
+                        tabouAEnlever = lieuTabou;
+                    }
+                }
+                tabou.remove(tabouAEnlever);
+            }
+            tabou.add(new LieuTabou(lieuFormation, maxTabou));
+            
+            lieuChoisi = getLieuFormationPlusProche(formations);
+            int nbLieu = solution.getFormationsChoisies().size();
+            if (!solution.getFormationsChoisies().contains(lieuChoisi))
+                nbLieu++;
+            coutChoisi = 3000*nbLieu;
+            
+            for (Agence a : solution.getAgences()) {
+                coutChoisi+=a.getNbPersonnes()*0.4*a.getDistance(a.getLieuFormation())*2;
+            }
+            
+        }
+        
+        LieuFormation ancienLieu = this.lieuFormation;
+        this.lieuFormation = lieuChoisi;
+        ancienLieu.getAgencesAssociees().remove(this);
+        solution.getFormationsChoisies().remove(ancienLieu);
+        lieuChoisi.getAgencesAssociees().add(this);
+        solution.getFormationsChoisies().add(lieuChoisi);
+        solution.setCout(coutChoisi);
+        
+        return lieuChoisi;
     }
 
     public String getId() {

@@ -16,6 +16,7 @@ public class Solution {
     private double cout;
     
     private List<LieuFormation> formationsChoisies;
+    private List<Agence> agences;
     
     public Solution(){
         
@@ -35,6 +36,20 @@ public class Solution {
 
     public void setFormationsChoisies(List<LieuFormation> formationsChoisies) {
         this.formationsChoisies = formationsChoisies;
+    }
+
+    /**
+     * @return the agences
+     */
+    public List<Agence> getAgences() {
+        return agences;
+    }
+
+    /**
+     * @param agences the agences to set
+     */
+    public void setAgences(List<Agence> agences) {
+        this.agences = agences;
     }
     
     

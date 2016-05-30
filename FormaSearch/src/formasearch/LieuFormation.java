@@ -22,7 +22,7 @@ public class LieuFormation extends Ville {
     
     public boolean hasEnoughtPlace(Agence agence){
         int nbPersonnesLieu=0;
-        for(Agence a:agencesAssociees){
+        for(Agence a:getAgencesAssociees()){
             nbPersonnesLieu+=a.getNbPersonnes();           
         }
         if((nbPersonnesLieu+agence.getNbPersonnes())>60){
@@ -33,13 +33,27 @@ public class LieuFormation extends Ville {
     
     //Assigne l'agence au lieu de formation et l'agence au lieu de formation
     public void assignAgence(Agence a){
-        agencesAssociees.add(a);
+        getAgencesAssociees().add(a);
         a.setLieuFormation(this);
     }
 
     @Override
     public String toString() {
         return "LieuFormation{" + "id=" + id + ", nom=" + nom + ", codePostal=" + codePostal + ", longitude=" + longitude + ", latitude=" + latitude + '}';
+    }
+
+    /**
+     * @return the agencesAssociees
+     */
+    public List<Agence> getAgencesAssociees() {
+        return agencesAssociees;
+    }
+
+    /**
+     * @param agencesAssociees the agencesAssociees to set
+     */
+    public void setAgencesAssociees(List<Agence> agencesAssociees) {
+        this.agencesAssociees = agencesAssociees;
     }
     
     
