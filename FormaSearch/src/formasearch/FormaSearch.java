@@ -25,8 +25,9 @@ public class FormaSearch {
         
         String fichierAgence ="C:\\Users\\Epulapp\\Documents\\ProjetOptiDiscrete\\FormaSearch\\Sources\\ListeAgences_100.txt";
         List<Agence> agences = Utilitaire.getAgenceFichier(fichierAgence);
+        LieuFormation formation=null;
         for(Agence a:agences){
-            System.out.println(a.toString());
+            formation = a.getLieuFormationPlusProche(formations);
         }
         
         Ville v1 = new Ville();
@@ -39,6 +40,9 @@ public class FormaSearch {
         
         double distance = v1.getDistance(v2);
         System.out.println(distance);
+        
+        
+        
     }
     
 }

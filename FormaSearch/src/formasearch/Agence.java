@@ -26,6 +26,8 @@ public class Agence extends Ville{
             //Si le lieu a assez de place
             if(f.hasEnoughtPlace(this)){
                 //On regarde sa distance
+                f.getDistance(this);
+                
             }
         }
              
