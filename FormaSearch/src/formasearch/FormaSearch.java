@@ -27,7 +27,7 @@ public class FormaSearch {
         //Récupération de la liste des agences à partir du fichier
         String fichierAgence ="Sources/ListeAgences_100.txt";
         List<Agence> agences = Utilitaire.getAgenceFichier(fichierAgence);
-        int tailleEchantillon = (int)agences.size()*20/100;
+        int tailleEchantillon = (int)agences.size()*50/100;
                
         //Récupération de la liste des formations à partir du fichier
         String fichierLieuFormation ="Sources/LieuxPossibles.txt";

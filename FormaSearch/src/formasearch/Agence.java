@@ -53,6 +53,8 @@ public class Agence extends Ville{
                 if (!solution.getFormationsChoisies().contains(f))
                     nbLieu++;
                 coutChoisi = 3000*nbLieu;
+                LieuFormation ancienLieu = this.getLieuFormation();
+                this.setLieuFormation(f);
                 for (Agence a : solution.getAgences()) {
                     coutChoisi+=a.getNbPersonnes()*0.4*a.getDistance(a.getLieuFormation())*2;
                 }
@@ -60,16 +62,15 @@ public class Agence extends Ville{
                 if (coutChoisi < solution.getCout()) {
                     lieuChoisi = f;
                     nouvelleSolution = true;
-
                 }
-                
+                this.setLieuFormation(ancienLieu);
             }
         }
         if (!nouvelleSolution) {
             int maxTabou = 0;
             int minTabou = 0;
             
-            if (tabou.size() >= 3) {
+            if (tabou.size() >= 1) {
                 for (LieuTabou lieuTabou : tabou) {
                     if (lieuTabou.getAnciennete() >= maxTabou)
                         maxTabou = lieuTabou.getAnciennete();
@@ -91,6 +92,8 @@ public class Agence extends Ville{
             
             lieuChoisi = getLieuFormationPlusProche(formations);
             int nbLieu = solution.getFormationsChoisies().size();
+            LieuFormation ancienLieu = this.getLieuFormation();
+            this.setLieuFormation(lieuChoisi);
             if (!solution.getFormationsChoisies().contains(lieuChoisi))
                 nbLieu++;
             coutChoisi = 3000*nbLieu;
@@ -99,14 +102,20 @@ public class Agence extends Ville{
                 coutChoisi+=a.getNbPersonnes()*0.4*a.getDistance(a.getLieuFormation())*2;
             }
             
+            this.setLieuFormation(ancienLieu);
+            
         }
         
         LieuFormation ancienLieu = this.lieuFormation;
         this.lieuFormation = lieuChoisi;
         ancienLieu.getAgencesAssociees().remove(this);
-        solution.getFormationsChoisies().remove(ancienLieu);
+        if (ancienLieu.getAgencesAssociees().size() == 0) {
+            solution.getFormationsChoisies().remove(ancienLieu);
+        }
         lieuChoisi.getAgencesAssociees().add(this);
-        solution.getFormationsChoisies().add(lieuChoisi);
+        if (!solution.getFormationsChoisies().contains(lieuChoisi)) {
+            solution.getFormationsChoisies().add(lieuChoisi);
+        }
         solution.setCout(coutChoisi);
         
         return lieuChoisi;
