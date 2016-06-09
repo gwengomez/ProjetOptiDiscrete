@@ -1,0 +1,4 @@
+Pour lancer le programme, ouvrir le projet sur netbeans et l'exécuter.
+Il faut commencer par importer les différents fichiers (villes et agences) et choisir le nombre d'itération avant de lancer l'algorithme.
+
+En cas de problème, veuillez nous contacter.
