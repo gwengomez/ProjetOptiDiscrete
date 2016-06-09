@@ -57,7 +57,7 @@ public class Controleur {
         String fichierLieuFormation = file.getAbsolutePath();
         List<LieuFormation> lieuxFormation = Utilitaire.getLieuFormationFichier(fichierLieuFormation);
         listeLF = lieuxFormation;
-        tailleEchantillon = (int) lieuxFormation.size()*50/100;
+        tailleEchantillon = (int) lieuxFormation.size() * 50/100;
     }
     
     /**
